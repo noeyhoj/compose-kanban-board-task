@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -22,23 +23,35 @@ import kanbanboard.composeapp.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource
 
 @Composable
-@Preview
+@Preview(showBackground = true)
 fun App() {
-    MaterialTheme {
-        var showContent by remember { mutableStateOf(false) }
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .safeContentPadding()
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Button(onClick = { showContent = !showContent }) {
-                Text("Click me!")
-            }
-            AnimatedVisibility(showContent) {
-                Image(painterResource(Res.drawable.compose_multiplatform), null)
-            }
-        }
+    CheckerScreen()
+}
+
+@Composable
+fun CheckerScreen() {
+    var checked by remember { mutableStateOf(true) }
+
+    CheckerView(checked = checked) {
+        checked = !checked
     }
 }
+
+@Composable
+fun CheckerView(checked: Boolean, check: () -> Unit) {
+    Column {
+        Checkbox(
+            checked = checked,
+            onCheckedChange = { check() },
+        )
+        if (checked) Text(text = "체크됨!!!")
+    }
+}
+
+// 1. comp
+
+// 2. 함수에서 option + enter
+
+// 3. 직접 작성
+
+// option + command + l -> 코드 깔끔하게
