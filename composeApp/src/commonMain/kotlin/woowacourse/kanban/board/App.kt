@@ -271,7 +271,7 @@ fun KanbanBoardCase1() {
                 Icon(
                     imageVector = Icons.Default.Person, contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(25.dp, 25.dp).clip(CircleShape)
+                    modifier = Modifier.size(25.dp).clip(CircleShape)
                         .border(width = 2.dp, color = Color.Gray)
                         .background(color = Color.Gray),
                 )
@@ -318,7 +318,7 @@ fun KanbanBoardCase2() {
                 Icon(
                     imageVector = Icons.Default.Person, contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(25.dp, 25.dp).clip(CircleShape)
+                    modifier = Modifier.size(25.dp).clip(CircleShape)
                         .border(width = 2.dp, color = Color.Gray)
                         .background(color = Color.Gray),
                 )
@@ -360,7 +360,7 @@ fun KanbanBoardCase3() {
                 Icon(
                     imageVector = Icons.Default.Person, contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(25.dp, 25.dp).clip(CircleShape)
+                    modifier = Modifier.size(25.dp).clip(CircleShape)
                         .border(width = 2.dp, color = Color.Gray)
                         .background(color = Color.Gray),
                 )
@@ -392,7 +392,7 @@ fun KanbanBoardCase4() {
                 Icon(
                     imageVector = Icons.Default.Person, contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(25.dp, 25.dp).clip(CircleShape)
+                    modifier = Modifier.size(25.dp).clip(CircleShape)
                         .border(width = 2.dp, color = Color.Gray)
                         .background(color = Color.Gray),
                 )
