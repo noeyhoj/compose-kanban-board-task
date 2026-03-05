@@ -9,12 +9,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -44,238 +47,110 @@ import kanbanboard.composeapp.generated.resources.Res
 import kanbanboard.composeapp.generated.resources.planet
 import kanbanboard.composeapp.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource
+import woowacourse.kanban.board.model.BORDER_COLOR
+import woowacourse.kanban.board.model.BoardComponent
+import woowacourse.kanban.board.model.CONTENT_COLOR
+import woowacourse.kanban.board.model.DEFAULT_CONTENT
+import woowacourse.kanban.board.model.DEFAULT_NAME
+import woowacourse.kanban.board.model.DEFAULT_TITLE
+import woowacourse.kanban.board.model.MAX_CONTENT
+import woowacourse.kanban.board.model.MAX_NAME
+import woowacourse.kanban.board.model.MAX_TITLE
+import woowacourse.kanban.board.model.PROFILE_BG_COLOR
+import woowacourse.kanban.board.model.PROFILE_COLOR
+import woowacourse.kanban.board.model.TAG_COLOR
 
 @Composable
 @Preview(showBackground = true)
 fun App() {
-    CheckerScreen()
-}
-
-@Composable
-fun CheckerScreen() {
-    var checked by remember { mutableStateOf(true) }
-
-    CheckerView(checked = checked) {
-        checked = !checked
-    }
-}
-
-@Composable
-fun CheckerView(checked: Boolean, check: () -> Unit) {
-    Column {
-        Checkbox(
-            checked = checked,
-            onCheckedChange = { check() },
-        )
-        if (checked) Text(text = "체크됨!!!")
-    }
-}
-
-// 1. comp
-// 2. 함수에서 option + enter
-// 3. 직접 작성
-// option + command + l -> 코드 깔끔하게
-
-// 텍스트 예제
-@Composable
-@Preview(showBackground = true)
-fun TextExample() {
-    Text(text = "Jetpack Compose Text 실습", fontSize = 22.sp, color = Color.Blue, fontWeight = FontWeight.Bold)
+    BoardScreenView()
 }
 
 @Composable
 @Preview(showBackground = true)
-fun ImageExample() {
-    Image(painter = painterResource(Res.drawable.planet), contentDescription = "행성이 사진")
-}
-
-@Composable
-@Preview(showBackground = true)
-fun IconExample() {
-    Icon(imageVector = Icons.Default.Favorite, contentDescription = "기본 하트")
-}
-
-@Composable
-@Preview(showBackground = true)
-fun ButtonExample1() {
-    Button(
-        onClick = {
-            println("버튼 클릭")
-        },
-    ) {
-        Text("버튼")
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun ButtonExample2() {
-    Button(
-        onClick = {
-            println("버튼 클릭")
-        },
-    ) {
-        Icon(imageVector = Icons.Default.Favorite, contentDescription = "아이콘 버튼의 하트 아이콘")
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun ButtonExample3() {
-    Button(
-        onClick = {
-            println("버튼 클릭")
-        },
-    ) {
-        Row {
-            Icon(imageVector = Icons.Default.Favorite, contentDescription = "아이콘 버튼의 하트 아이콘")
-            Text("좋아요")
-        }
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun BoxExample() {
-    Box(
-        modifier = Modifier.size(200.dp),
-    ) {
-        Box(
-            modifier = Modifier.size(50.dp).background(color = Color.Red).align(Alignment.TopStart),
-        )
-        Box(
-            modifier = Modifier.size(50.dp).background(color = Color.Yellow).align(Alignment.Center),
-        )
-        Box(
-            modifier = Modifier.size(50.dp).background(color = Color.Green).align(Alignment.BottomEnd),
-        )
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun KanbanBoardMax() {
+fun KanbanBoardTemplate(
+    title: String = DEFAULT_TITLE,
+    content: String = "",
+    tags: List<String> = listOf(),
+    name: String = DEFAULT_NAME,
+) {
     Box(
         modifier = Modifier
-            .height(235.dp)
-            .border(width = 1.dp, color = Color(0xffE5E7EB), shape = RoundedCornerShape(15.dp))
+            .padding(4.dp)
+            .border(
+                width = 1.dp,
+                color = Color(BORDER_COLOR),
+                shape = RoundedCornerShape(15.dp),
+            )
             .width(270.dp)
             .padding(12.dp),
     ) {
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+        Column {
             // 제목
-            Box {
-                Text("너무너무 긴 제목은 한 줄까지만 노출합니다.", fontSize = 16.sp, overflow = TextOverflow.Ellipsis, maxLines = 1)
+            Box (
+                modifier = Modifier.padding(vertical = 8.dp)
+            ) {
+                Text(
+                    title,
+                    fontSize = 16.sp,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = 1,
+                )
             }
             // 중간 내용
-            Box {
+            if (content.isNotBlank())
+            Box (
+                modifier = Modifier.padding(vertical = 4.dp)
+            ) {
                 Text(
-                    "너무너무너무 긴 설명은 두 줄까지만 노출하고 말줄임표로 처리합니다 두 줄까지만 노출합니다.",
+                    content,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = 2,
                     fontSize = 14.sp,
-                    color = Color(0xff4A5565),
+                    color = Color(CONTENT_COLOR),
                 )
             }
             // 태그
+            if (tags.isNotEmpty())
             FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                modifier = Modifier.padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(4.dp),
             ) {
-                Box(
-                    modifier = Modifier.background(color = Color(0xffF3F4F6), shape = RoundedCornerShape(45.dp)),
-                ) {
-                    Text("너무너무", modifier = Modifier.padding(6.dp), fontSize = 10.sp)
-                }
-                Box(
-                    modifier = Modifier.background(color = Color(0xffF3F4F6), shape = RoundedCornerShape(45.dp)),
-                ) {
-                    Text("긴 태그", modifier = Modifier.padding(6.dp), fontSize = 10.sp)
-                }
-                Box(
-                    modifier = Modifier.background(color = Color(0xffF3F4F6), shape = RoundedCornerShape(45.dp)),
-                ) {
-                    Text("최대로", modifier = Modifier.padding(6.dp), fontSize = 10.sp)
-                }
-                Box(
-                    modifier = Modifier.background(color = Color(0xffF3F4F6), shape = RoundedCornerShape(45.dp)),
-                ) {
-                    Text("5자까지", modifier = Modifier.padding(6.dp), fontSize = 10.sp)
-                }
-                Box(
-                    modifier = Modifier.background(color = Color(0xffF3F4F6), shape = RoundedCornerShape(45.dp)),
-                ) {
-                    Text("5개제한임", modifier = Modifier.padding(6.dp), fontSize = 10.sp)
+                for (tag in tags) {
+                    Box(
+                        modifier = Modifier
+                            .background(
+                                color = Color(TAG_COLOR),
+                                shape = RoundedCornerShape(45.dp),
+                            ),
+                    ) {
+                        Text(if (tag.length > 5) tag.substring(0, 5) else tag, modifier = Modifier.padding(6.dp), fontSize = 10.sp)
+                    }
                 }
             }
             // 구분선
             HorizontalDivider(thickness = 2.dp)
             // 작성자
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.padding(vertical = 8.dp),
+                horizontalArrangement = Arrangement.spacedBy(6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
                 Icon(
-                    imageVector = Icons.Default.Person, contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(25.dp, 25.dp).clip(CircleShape)
-                        .border(width = 2.dp, color = Color.Gray)
-                        .background(color = Color.Gray),
+                    imageVector = Icons.Default.Person,
+                    contentDescription = null,
+                    tint = Color(PROFILE_COLOR),
+                    modifier = Modifier.size(25.dp)
+                        .clip(CircleShape)
+                        .border(width = 2.dp, color = Color(PROFILE_BG_COLOR))
+                        .background(color = Color(PROFILE_BG_COLOR)),
                 )
-                Text("너무너무너무 긴 담당자도 한 줄까지만 노출합니다.", overflow = TextOverflow.Ellipsis, maxLines = 1)
-            }
-        }
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun KanbanBoardCase1() {
-    Box(
-        modifier = Modifier
-            .height(215.dp)
-            .border(width = 1.dp, color = Color(0xffE5E7EB), shape = RoundedCornerShape(15.dp))
-            .width(270.dp)
-            .padding(12.dp),
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            // 제목
-            Box {
-                Text("LazyColumn 컴포넌트 구현", fontSize = 16.sp, overflow = TextOverflow.Ellipsis, maxLines = 1)
-            }
-            // 중간 내용
-            Box {
                 Text(
-                    "세로 스크롤 가능한 리스트 컴포넌트를 만들고 성능 최적화를 적용합니다.",
+                    name,
                     overflow = TextOverflow.Ellipsis,
-                    maxLines = 2,
-                    fontSize = 14.sp,
-                    color = Color(0xff4A5565),
+                    maxLines = 1,
                 )
-            }
-            // 태그
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-            ) {
-                Box(
-                    modifier = Modifier.background(color = Color(0xffF3F4F6), shape = RoundedCornerShape(45.dp)),
-                ) {
-                    Text("컴포넌트", modifier = Modifier.padding(6.dp), fontSize = 10.sp)
-                }
-                Box(
-                    modifier = Modifier.background(color = Color(0xffF3F4F6), shape = RoundedCornerShape(45.dp)),
-                ) {
-                    Text("성능", modifier = Modifier.padding(6.dp), fontSize = 10.sp)
-                }
-            }
-            // 구분선
-            HorizontalDivider(thickness = 2.dp)
-            // 작성자
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Person, contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(25.dp).clip(CircleShape)
-                        .border(width = 2.dp, color = Color.Gray)
-                        .background(color = Color.Gray),
-                )
-                Text("다이노", overflow = TextOverflow.Ellipsis, maxLines = 1)
             }
         }
     }
@@ -283,121 +158,44 @@ fun KanbanBoardCase1() {
 
 @Composable
 @Preview(showBackground = true)
-fun KanbanBoardCase2() {
-    Box(
-        modifier = Modifier
-            .height(150.dp)
-            .border(width = 1.dp, color = Color(0xffE5E7EB), shape = RoundedCornerShape(15.dp))
-            .width(270.dp)
-            .padding(12.dp),
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            // 제목
-            Box {
-                Text("LazyColumn 컴포넌트 구현", fontSize = 16.sp, overflow = TextOverflow.Ellipsis, maxLines = 1)
-            }
-            // 태그
-            FlowRow(
-                horizontalArrangement = Arrangement.spacedBy(6.dp),
-            ) {
-                Box(
-                    modifier = Modifier.background(color = Color(0xffF3F4F6), shape = RoundedCornerShape(45.dp)),
-                ) {
-                    Text("컴포넌트", modifier = Modifier.padding(6.dp), fontSize = 10.sp)
-                }
-                Box(
-                    modifier = Modifier.background(color = Color(0xffF3F4F6), shape = RoundedCornerShape(45.dp)),
-                ) {
-                    Text("성능", modifier = Modifier.padding(6.dp), fontSize = 10.sp)
-                }
-            }
-            // 구분선
-            HorizontalDivider(thickness = 2.dp)
-            // 작성자
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Person, contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(25.dp).clip(CircleShape)
-                        .border(width = 2.dp, color = Color.Gray)
-                        .background(color = Color.Gray),
-                )
-                Text("다이노", overflow = TextOverflow.Ellipsis, maxLines = 1)
-            }
-        }
-    }
-}
+fun BoardScreenView() {
+    val boardCases = listOf(
+        BoardComponent(
+            title = DEFAULT_TITLE,
+            content = DEFAULT_CONTENT,
+            tags = listOf("컴포넌트", "성능"),
+            name = DEFAULT_NAME,
+        ),
+        BoardComponent(
+            title = DEFAULT_TITLE,
+            tags = listOf("컴포넌트", "성능"),
+            name = DEFAULT_NAME,
+        ),
+        BoardComponent(
+            title = DEFAULT_TITLE,
+            content = DEFAULT_CONTENT,
+            name = DEFAULT_NAME,
+        ),
+        BoardComponent(
+            title = DEFAULT_TITLE,
+            name = DEFAULT_NAME,
+        ),
+        BoardComponent(
+            title = MAX_TITLE,
+            content = MAX_CONTENT,
+            tags = listOf("너무너무", "긴 태그", "최대로", "5자까지", "5개제한임"),
+            name = MAX_NAME,
+        ),
+    )
 
-@Composable
-@Preview(showBackground = true)
-fun KanbanBoardCase3() {
-    Box(
-        modifier = Modifier
-            .height(170.dp)
-            .border(width = 1.dp, color = Color(0xffE5E7EB), shape = RoundedCornerShape(15.dp))
-            .width(270.dp)
-            .padding(12.dp),
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            // 제목
-            Box {
-                Text("LazyColumn 컴포넌트 구현", fontSize = 16.sp, overflow = TextOverflow.Ellipsis, maxLines = 1)
-            }
-            // 중간 내용
-            Box {
-                Text(
-                    "세로 스크롤 가능한 리스트 컴포넌트를 만들고 성능 최적화를 적용합니다.",
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 2,
-                    fontSize = 14.sp,
-                    color = Color(0xff4A5565),
-                )
-            }
-            // 구분선
-            HorizontalDivider(thickness = 2.dp)
-            // 작성자
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Person, contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(25.dp).clip(CircleShape)
-                        .border(width = 2.dp, color = Color.Gray)
-                        .background(color = Color.Gray),
-                )
-                Text("다이노", overflow = TextOverflow.Ellipsis, maxLines = 1)
-            }
-        }
-    }
-}
-
-@Composable
-@Preview(showBackground = true)
-fun KanbanBoardCase4() {
-    Box(
-        modifier = Modifier
-            .height(120.dp)
-            .border(width = 1.dp, color = Color(0xffE5E7EB), shape = RoundedCornerShape(15.dp))
-            .width(270.dp)
-            .padding(12.dp),
-    ) {
-        Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-            // 제목
-            Box {
-                Text("LazyColumn 컴포넌트 구현", fontSize = 16.sp, overflow = TextOverflow.Ellipsis, maxLines = 1)
-            }
-            // 구분선
-            HorizontalDivider(thickness = 2.dp)
-            // 작성자
-            Row(horizontalArrangement = Arrangement.spacedBy(6.dp), verticalAlignment = Alignment.CenterVertically) {
-                Icon(
-                    imageVector = Icons.Default.Person, contentDescription = null,
-                    tint = Color.White,
-                    modifier = Modifier.size(25.dp).clip(CircleShape)
-                        .border(width = 2.dp, color = Color.Gray)
-                        .background(color = Color.Gray),
-                )
-                Text("다이노", overflow = TextOverflow.Ellipsis, maxLines = 1)
-            }
+    LazyColumn {
+        items(items = boardCases) { item ->
+            KanbanBoardTemplate(
+                title = item.title,
+                content = item.content,
+                tags = item.tags,
+                name = item.name
+            )
         }
     }
 }
