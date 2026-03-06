@@ -113,24 +113,26 @@ fun KanbanBoardTemplate(
             }
 
             // 태그
-            if (tags.isNotEmpty())
-            FlowRow(
-                modifier = Modifier.padding(vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-            ) {
-                for (tag in tags) {
-                    Box(
-                        modifier = Modifier
-                            .background(
-                                color = Color(TAG_COLOR),
-                                shape = RoundedCornerShape(45.dp),
-                            ),
-                    ) {
-                        Text(if (tag.length > 5) tag.substring(0, 5) else tag, modifier = Modifier.padding(6.dp), fontSize = 10.sp)
+            if (tags.isNotEmpty()) {
+                FlowRow(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    for (tag in tags) {
+                        Box(
+                            modifier = Modifier
+                                .background(
+                                    color = Color(TAG_COLOR),
+                                    shape = RoundedCornerShape(45.dp),
+                                ),
+                        ) {
+                            Text(if (tag.length > 5) tag.substring(0, 5) else tag, modifier = Modifier.padding(6.dp), fontSize = 10.sp)
+                        }
                     }
                 }
             }
+
             // 구분선
             HorizontalDivider(thickness = 2.dp)
             // 작성자
