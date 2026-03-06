@@ -45,7 +45,7 @@ class LayoutBasicsTest {
                 color = Color.Blue,
                 fontSize = 26.sp,
                 fontWeight = FontWeight.Bold,
-                fontFamily = FontFamily.SansSerif
+                fontFamily = FontFamily.SansSerif,
             )
         }
 
@@ -59,7 +59,7 @@ class LayoutBasicsTest {
         // given
         setContent {
             Column(
-                modifier = Modifier.testTag("이름")
+                modifier = Modifier.testTag("이름"),
             ) {
                 // 바꿔 보세요!
                 Text(text = "깜포즈", color = Color.Yellow)
@@ -87,7 +87,7 @@ class LayoutBasicsTest {
                     enabled = !enabled // 버튼을 눌렀을 때 boolean이 변하는지 테스트하기 위한 코드기 때문에 onClick에 값을 뒤바꾸는 로직을 추가하였다.
                 },
                 enabled = enabled,
-                modifier = Modifier.testTag("버튼")
+                modifier = Modifier.testTag("버튼"),
             ) {
                 Text(text = "클릭해주세요")
             }
