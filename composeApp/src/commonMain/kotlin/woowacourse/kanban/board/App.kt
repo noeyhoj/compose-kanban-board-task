@@ -1,7 +1,5 @@
 package woowacourse.kanban.board
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -9,44 +7,29 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Button
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kanbanboard.composeapp.generated.resources.Res
-import kanbanboard.composeapp.generated.resources.planet
-import kanbanboard.composeapp.generated.resources.compose_multiplatform
-import org.jetbrains.compose.resources.painterResource
 import woowacourse.kanban.board.model.BORDER_COLOR
 import woowacourse.kanban.board.model.BoardComponent
 import woowacourse.kanban.board.model.CONTENT_COLOR
@@ -61,22 +44,14 @@ import woowacourse.kanban.board.model.PROFILE_COLOR
 import woowacourse.kanban.board.model.TAG_COLOR
 
 @Composable
-@Preview(showBackground = true)
 fun App() {
-    BoardScreenView()
 }
 
 @Composable
 @Preview(showBackground = true)
-fun KanbanBoardTemplate(
-    title: String = DEFAULT_TITLE,
-    content: String = "",
-    tags: List<String> = listOf(),
-    name: String = DEFAULT_NAME,
-) {
+fun KanbanBoardTemplate(title: String = DEFAULT_TITLE, content: String = "", tags: List<String> = listOf(), name: String = DEFAULT_NAME) {
     Box(
         modifier = Modifier
-            .padding(4.dp)
             .border(
                 width = 1.dp,
                 color = Color(BORDER_COLOR),
@@ -87,8 +62,8 @@ fun KanbanBoardTemplate(
     ) {
         Column {
             // 제목
-            Box (
-                modifier = Modifier.padding(vertical = 8.dp)
+            Box(
+                modifier = Modifier.padding(vertical = 8.dp),
             ) {
                 Text(
                     title,
@@ -99,8 +74,8 @@ fun KanbanBoardTemplate(
             }
             // 중간 내용
             if (content.isNotBlank()) {
-                Box (
-                    modifier = Modifier.padding(vertical = 4.dp)
+                Box(
+                    modifier = Modifier.padding(vertical = 4.dp),
                 ) {
                     Text(
                         content,
@@ -119,15 +94,17 @@ fun KanbanBoardTemplate(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
-                    for (tag in tags) {
-                        Box(
-                            modifier = Modifier
-                                .background(
-                                    color = Color(TAG_COLOR),
-                                    shape = RoundedCornerShape(45.dp),
-                                ),
-                        ) {
-                            Text(if (tag.length > 5) tag.substring(0, 5) else tag, modifier = Modifier.padding(6.dp), fontSize = 10.sp)
+                    for (tagIndex in tags.indices) {
+                        if (tagIndex < 5) {
+                            Box(
+                                modifier = Modifier
+                                    .background(
+                                        color = Color(TAG_COLOR),
+                                        shape = RoundedCornerShape(45.dp),
+                                    ),
+                            ) {
+                                Text(if (tags[tagIndex].length > 5) tags[tagIndex].substring(0, 5) else tags[tagIndex], modifier = Modifier.padding(6.dp), fontSize = 10.sp)
+                            }
                         }
                     }
                 }
@@ -160,10 +137,8 @@ fun KanbanBoardTemplate(
     }
 }
 
-@Composable
-@Preview(showBackground = true)
-fun BoardScreenView() {
-    val boardCases = listOf(
+class BoardPreviewParameterProvider : PreviewParameterProvider<BoardComponent> {
+    override val values = sequenceOf(
         BoardComponent(
             title = DEFAULT_TITLE,
             content = DEFAULT_CONTENT,
@@ -191,15 +166,15 @@ fun BoardScreenView() {
             name = MAX_NAME,
         ),
     )
+}
 
-    LazyColumn {
-        items(items = boardCases) { item ->
-            KanbanBoardTemplate(
-                title = item.title,
-                content = item.content,
-                tags = item.tags,
-                name = item.name
-            )
-        }
-    }
+@Preview(showBackground = true)
+@Composable
+fun BoardScreenView(@PreviewParameter(BoardPreviewParameterProvider::class) board: BoardComponent) {
+    KanbanBoardTemplate(
+        title = board.title,
+        content = board.content,
+        tags = board.tags,
+        name = board.name,
+    )
 }
