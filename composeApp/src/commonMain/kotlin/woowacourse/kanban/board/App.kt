@@ -98,18 +98,20 @@ fun KanbanBoardTemplate(
                 )
             }
             // 중간 내용
-            if (content.isNotBlank())
-            Box (
-                modifier = Modifier.padding(vertical = 4.dp)
-            ) {
-                Text(
-                    content,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 2,
-                    fontSize = 14.sp,
-                    color = Color(CONTENT_COLOR),
-                )
+            if (content.isNotBlank()) {
+                Box (
+                    modifier = Modifier.padding(vertical = 4.dp)
+                ) {
+                    Text(
+                        content,
+                        overflow = TextOverflow.Ellipsis,
+                        maxLines = 2,
+                        fontSize = 14.sp,
+                        color = Color(CONTENT_COLOR),
+                    )
+                }
             }
+
             // 태그
             if (tags.isNotEmpty())
             FlowRow(
