@@ -1,9 +1,8 @@
-package woowacourse.kanban.board
+package woowacourse.kanban.board.model
 
 import androidx.compose.ui.test.ExperimentalTestApi
-import org.junit.Assert.assertThrows
+import org.junit.Assert
 import org.junit.Test
-import woowacourse.kanban.board.model.Nickname
 
 @OptIn(ExperimentalTestApi::class)
 class NicknameTest {
@@ -14,7 +13,7 @@ class NicknameTest {
         val nickname = ""
         // when
         // then
-        assertThrows(IllegalArgumentException::class.java) {
+        Assert.assertThrows(IllegalArgumentException::class.java) {
             Nickname(nickname)
         }
     }
@@ -25,7 +24,7 @@ class NicknameTest {
         val nickname = " "
         // when
         // then
-        assertThrows(IllegalArgumentException::class.java) {
+        Assert.assertThrows(IllegalArgumentException::class.java) {
             Nickname(nickname)
         }
     }

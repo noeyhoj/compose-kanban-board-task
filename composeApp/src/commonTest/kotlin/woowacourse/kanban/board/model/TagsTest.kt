@@ -1,9 +1,8 @@
-package woowacourse.kanban.board
+package woowacourse.kanban.board.model
 
 import androidx.compose.ui.test.ExperimentalTestApi
+import org.junit.Assert
 import kotlin.test.Test
-import org.junit.Assert.assertThrows
-import woowacourse.kanban.board.model.Tags
 
 @OptIn(ExperimentalTestApi::class)
 class TagsTest {
@@ -14,7 +13,7 @@ class TagsTest {
         val tags = listOf("일", "이", "삼", "사", "오", "육")
         // when
         // then
-        assertThrows(IllegalArgumentException::class.java) {
+        Assert.assertThrows(IllegalArgumentException::class.java) {
             Tags(tags)
         }
     }

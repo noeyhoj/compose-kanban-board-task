@@ -1,9 +1,8 @@
-package woowacourse.kanban.board
+package woowacourse.kanban.board.model
 
 import androidx.compose.ui.test.ExperimentalTestApi
-import org.junit.Assert.assertThrows
+import org.junit.Assert
 import org.junit.Test
-import woowacourse.kanban.board.model.Title
 
 @OptIn(ExperimentalTestApi::class)
 class TitleTest {
@@ -14,7 +13,7 @@ class TitleTest {
         val title = " "
         // when
         // then
-        assertThrows(IllegalArgumentException::class.java) {
+        Assert.assertThrows(IllegalArgumentException::class.java) {
             Title(title)
         }
     }
@@ -25,7 +24,7 @@ class TitleTest {
         val title = " "
         // when
         // then
-        assertThrows(IllegalArgumentException::class.java) {
+        Assert.assertThrows(IllegalArgumentException::class.java) {
             Title(title)
         }
     }
