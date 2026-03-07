@@ -3,11 +3,15 @@ package woowacourse.kanban.board
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.runComposeUiTest
-import woowacourse.kanban.board.model.BoardComponent
-import woowacourse.kanban.board.model.DEFAULT_CONTENT
-import woowacourse.kanban.board.model.DEFAULT_NAME
-import woowacourse.kanban.board.model.DEFAULT_TITLE
 import kotlin.test.Test
+import woowacourse.kanban.board.component.KanbanBoardTemplate
+import woowacourse.kanban.board.constant.DEFAULT_CONTENT
+import woowacourse.kanban.board.constant.DEFAULT_NAME
+import woowacourse.kanban.board.constant.DEFAULT_TITLE
+import woowacourse.kanban.board.model.BoardData
+import woowacourse.kanban.board.model.Nickname
+import woowacourse.kanban.board.model.Tags
+import woowacourse.kanban.board.model.Title
 
 @OptIn(ExperimentalTestApi::class)
 class BoardTest {
@@ -15,11 +19,11 @@ class BoardTest {
     @Test
     fun `모든 필드가 있는 카드`() = runComposeUiTest {
         // given
-        val board = BoardComponent(
-            title = DEFAULT_TITLE,
+        val board = BoardData(
+            title = Title(DEFAULT_TITLE),
             content = DEFAULT_CONTENT,
-            tags = listOf("컴포넌트", "성능"),
-            name = DEFAULT_NAME
+            tags = Tags(listOf("컴포넌트", "성능")),
+            nickname = Nickname(DEFAULT_NAME),
         )
 
         setContent {
@@ -27,7 +31,7 @@ class BoardTest {
                 title = board.title,
                 content = board.content,
                 tags = board.tags,
-                name = board.name
+                nickname = board.nickname,
             )
         }
         // when
@@ -43,10 +47,10 @@ class BoardTest {
     @Test
     fun `중간 내용 필드만 없는 카드`() = runComposeUiTest {
         // given
-        val board = BoardComponent(
-            title = DEFAULT_TITLE,
-            tags = listOf("컴포넌트", "성능"),
-            name = DEFAULT_NAME
+        val board = BoardData(
+            title = Title(DEFAULT_TITLE),
+            tags = Tags(listOf("컴포넌트", "성능")),
+            nickname = Nickname(DEFAULT_NAME),
         )
 
         setContent {
@@ -54,7 +58,7 @@ class BoardTest {
                 title = board.title,
                 content = board.content,
                 tags = board.tags,
-                name = board.name
+                nickname = board.nickname,
             )
         }
         // when
@@ -69,10 +73,11 @@ class BoardTest {
     @Test
     fun `태그 필드만 없는 카드`() = runComposeUiTest {
         // given
-        val board = BoardComponent(
-            title = DEFAULT_TITLE,
+        val board = BoardData(
+            title = Title(DEFAULT_TITLE),
             content = DEFAULT_CONTENT,
-            name = DEFAULT_NAME
+            tags = Tags(),
+            nickname = Nickname(DEFAULT_NAME),
         )
 
         setContent {
@@ -80,7 +85,7 @@ class BoardTest {
                 title = board.title,
                 content = board.content,
                 tags = board.tags,
-                name = board.name
+                nickname = board.nickname,
             )
         }
         // when
@@ -94,9 +99,10 @@ class BoardTest {
     @Test
     fun `중간 내용과 태그 필드가 없는 카드`() = runComposeUiTest {
         // given
-        val board = BoardComponent(
-            title = DEFAULT_TITLE,
-            name = DEFAULT_NAME
+        val board = BoardData(
+            title = Title(DEFAULT_TITLE),
+            tags = Tags(),
+            nickname = Nickname(DEFAULT_NAME),
         )
 
         setContent {
@@ -104,7 +110,7 @@ class BoardTest {
                 title = board.title,
                 content = board.content,
                 tags = board.tags,
-                name = board.name
+                nickname = board.nickname,
             )
         }
         // when
@@ -114,4 +120,3 @@ class BoardTest {
         onNodeWithText("다이노").assertExists()
     }
 }
-
