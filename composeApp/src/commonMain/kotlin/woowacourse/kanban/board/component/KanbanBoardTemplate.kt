@@ -28,7 +28,7 @@ import woowacourse.kanban.board.model.Tags
 import woowacourse.kanban.board.model.Title
 
 @Composable
-fun KanbanBoardTemplate(title: Title, content: String = "", tags: Tags, nickname: Nickname) {
+fun KanbanBoardTemplate(board: BoardData) {
     Box(
         modifier = Modifier
             .border(
@@ -41,23 +41,23 @@ fun KanbanBoardTemplate(title: Title, content: String = "", tags: Tags, nickname
     ) {
         Column {
             // 제목
-            Title(title = title, modifier = Modifier.padding(vertical = 8.dp).testTag("제목"))
+            Title(title = board.title, modifier = Modifier.padding(vertical = 8.dp).testTag("제목"))
 
             // 중간 내용
-            if (content.isNotBlank()) {
-                Content(content = content, modifier = Modifier.padding(vertical = 4.dp).testTag("중간내용"))
+            if (board.content.isNotBlank()) {
+                Content(content = board.content, modifier = Modifier.padding(vertical = 4.dp).testTag("중간내용"))
             }
 
             // 태그
-            if (tags.tags.isNotEmpty()) {
-                TagsComponent(tags = tags, modifier = Modifier.padding(vertical = 8.dp).testTag("테그목록"))
+            if (board.tags.tags.isNotEmpty()) {
+                TagsComponent(tags = board.tags, modifier = Modifier.padding(vertical = 8.dp).testTag("테그목록"))
             }
 
             // 구분선
             HorizontalDivider(thickness = 2.dp)
 
             // 작성자
-            Profile(nickname = nickname, modifier = Modifier.padding(vertical = 8.dp).testTag("프로필"))
+            Profile(nickname = board.nickname, modifier = Modifier.padding(vertical = 8.dp).testTag("프로필"))
         }
     }
 }
@@ -98,10 +98,5 @@ class BoardPreviewParameterProvider : PreviewParameterProvider<BoardData> {
 @Preview(showBackground = true)
 @Composable
 private fun BoardScreenView(@PreviewParameter(BoardPreviewParameterProvider::class) board: BoardData) {
-    KanbanBoardTemplate(
-        title = board.title,
-        content = board.content,
-        tags = board.tags,
-        nickname = board.nickname,
-    )
+    KanbanBoardTemplate(board)
 }

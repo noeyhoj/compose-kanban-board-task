@@ -3,9 +3,7 @@ package woowacourse.kanban.board
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.runComposeUiTest
-import org.junit.Before
 import kotlin.test.Test
 import woowacourse.kanban.board.component.KanbanBoardTemplate
 import woowacourse.kanban.board.constant.DEFAULT_CONTENT
@@ -23,7 +21,7 @@ class BoardTest {
         title: String = DEFAULT_TITLE,
         content: String = DEFAULT_CONTENT,
         tags: List<String> = listOf("컴포넌트", "성능"),
-        nickname: String = DEFAULT_NAME
+        nickname: String = DEFAULT_NAME,
     ) = BoardData(
         title = Title(title),
         content = content,
@@ -33,12 +31,7 @@ class BoardTest {
 
     @Composable
     private fun CreateUi(board: BoardData) {
-        KanbanBoardTemplate(
-            title = board.title,
-            content = board.content,
-            tags = board.tags,
-            nickname = board.nickname,
-        )
+        KanbanBoardTemplate(board)
     }
 
     @Test
