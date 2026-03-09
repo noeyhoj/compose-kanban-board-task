@@ -16,7 +16,7 @@ fun TagsComponent(tags: Tags) {
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         for (tag in tags.tags) {
-            Tag(tag, 5)
+            Tag(tag)
         }
     }
 }

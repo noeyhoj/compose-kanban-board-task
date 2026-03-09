@@ -13,7 +13,9 @@ import androidx.compose.ui.unit.sp
 import woowacourse.kanban.board.constant.TAG_COLOR
 
 @Composable
-fun Tag(content: String, maxLength: Int) {
+fun Tag(content: String) {
+    val maxLength = 5
+
     Box(
         modifier = Modifier
             .background(
