@@ -30,23 +30,23 @@ fun KanbanBoardTemplate(title: Title, content: String = "", tags: Tags, nickname
     ) {
         Column {
             // 제목
-            Title(title)
+            Title(title = title, modifier = Modifier.padding(vertical = 8.dp))
 
             // 중간 내용
             if (content.isNotBlank()) {
-                Content(content)
+                Content(content = content, modifier = Modifier.padding(vertical = 4.dp))
             }
 
             // 태그
             if (tags.tags.isNotEmpty()) {
-                TagsComponent(tags)
+                TagsComponent(tags = tags, modifier = Modifier.padding(vertical = 8.dp))
             }
 
             // 구분선
             HorizontalDivider(thickness = 2.dp)
 
             // 작성자
-            Profile(nickname)
+            Profile(nickname = nickname, modifier = Modifier.padding(vertical = 8.dp))
         }
     }
 }

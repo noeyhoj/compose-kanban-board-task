@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -23,9 +22,9 @@ import woowacourse.kanban.board.constant.PROFILE_COLOR
 import woowacourse.kanban.board.model.Nickname
 
 @Composable
-fun Profile(nickname: Nickname) {
+fun Profile(nickname: Nickname, modifier: Modifier = Modifier) {
     Row(
-        modifier = Modifier.padding(vertical = 8.dp),
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
