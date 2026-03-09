@@ -10,6 +10,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -40,23 +41,23 @@ fun KanbanBoardTemplate(title: Title, content: String = "", tags: Tags, nickname
     ) {
         Column {
             // 제목
-            Title(title = title, modifier = Modifier.padding(vertical = 8.dp))
+            Title(title = title, modifier = Modifier.padding(vertical = 8.dp).testTag("제목"))
 
             // 중간 내용
             if (content.isNotBlank()) {
-                Content(content = content, modifier = Modifier.padding(vertical = 4.dp))
+                Content(content = content, modifier = Modifier.padding(vertical = 4.dp).testTag("중간내용"))
             }
 
             // 태그
             if (tags.tags.isNotEmpty()) {
-                TagsComponent(tags = tags, modifier = Modifier.padding(vertical = 8.dp))
+                TagsComponent(tags = tags, modifier = Modifier.padding(vertical = 8.dp).testTag("테그목록"))
             }
 
             // 구분선
             HorizontalDivider(thickness = 2.dp)
 
             // 작성자
-            Profile(nickname = nickname, modifier = Modifier.padding(vertical = 8.dp))
+            Profile(nickname = nickname, modifier = Modifier.padding(vertical = 8.dp).testTag("프로필"))
         }
     }
 }
