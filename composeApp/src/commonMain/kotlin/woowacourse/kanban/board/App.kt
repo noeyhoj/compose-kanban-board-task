@@ -54,12 +54,7 @@ fun App() {
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
         items(values) { item ->
-            KanbanBoardTemplate(
-                title = item.title,
-                content = item.content,
-                tags = item.tags,
-                nickname = item.nickname,
-            )
+            KanbanBoardTemplate(item)
         }
     }
 }
